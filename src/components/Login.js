@@ -1,8 +1,6 @@
 import React from 'react';
-import {
-    Form, Icon, Input, Button, message
-} from 'antd';
-import { API_ROOT } from "../constants";
+import { Form, Icon, Input, Button, message } from 'antd';
+import { API_ROOT } from '../constants';
 import { Link } from 'react-router-dom';
 
 class NormalLoginForm extends React.Component {
@@ -11,7 +9,6 @@ class NormalLoginForm extends React.Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
-                // send request
                 fetch(`${API_ROOT}/login`, {
                     method: 'POST',
                     body: JSON.stringify({
@@ -23,16 +20,14 @@ class NormalLoginForm extends React.Component {
                         return response.text();
                     }
                     throw new Error(response.statusText);
-                })
-                    .then((data) => {
-                        console.log(data);
-                        message.success('Login Succeed!');
-                        this.props.history.push('/home');
-                    })
-                    .catch((e) => {
-                        console.log(e);
-                        message.error('Login Failed!');
-                    });
+                }).then((data) => {
+                    message.success('Login Success!');
+                    console.log(data);
+                    this.props.handleSuccessfulLogin(data);
+                }).catch((e) => {
+                    console.log(e);
+                    message.error('Login Failed.');
+                });
             }
         });
     }
